@@ -1,0 +1,387 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "timestamp": "2018-12-23T11:45:22Z",
+    "version": "1.0.0",
+    "meshName": "telink_test_room",
+    "id": "http://www.bluetooth.com/specifications/assigned-numbers/mesh-profile/cdb-schema.json#",
+    "partial": false,
+    "meshUUID": "1587919b-a8a8-b2bb-c5c5-cfdce6f0f0f9",
+    "ivIndex": "00000001",
+    "appKeys": [],
+    "nodes": [
+        {
+            "UUID": "fffbebbf-5306-0a00-0000-000000000000",
+            "macAddress": "000000000000",
+            "name": "",
+            "deviceKey": "fffbebbf53060a00529049f1f1bbe9eb",
+            "unicastAddress": "0001",
+            "sno": "00000001",
+            "security": "secure",
+            "cid": "0000",
+            "pid": "2005",
+            "vid": "0041",
+            "crpl": "03e8",
+            "features": {
+                "relay": 2,
+                "proxy": 2,
+                "friend": 2,
+                "lowPower": 2
+            },
+            "relayRetransmit": {
+                "count": 5,
+                "interval": 30
+            },
+            "networkTransmit": {
+                "count": 5,
+                "interval": 30
+            },
+            "netKeys": [
+                {
+                    "index": 0,
+                    "updated": false
+                }
+            ],
+            "appKeys": [
+                {
+                    "index": 0,
+                    "updated": false
+                }
+            ],
+            "elements": [
+                {
+                    "name": "",
+                    "index": 0,
+                    "location": "0000",
+                    "models": [
+                        {
+                            "modelId": "0000",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "0001",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "0002",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "0003",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "000b",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "0007",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "0009",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "000f",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "000d",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "0011",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "0013",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "0015",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1402",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1400",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1405",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1404",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1403",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1401",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "0005",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1202",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1208",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1001",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1003",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1005",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1008",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1205",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1302",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1305",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1309",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1311",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1102",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "100d",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1010",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "1015",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        },
+                        {
+                            "modelId": "00010000",
+                            "subscribe": [],
+                            "bind": [
+                                0
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "secureNetworkBeacon": true,
+            "configComplete": false,
+            "excluded": false,
+            "defaultTTL": 10
+        }
+    ],
+    "provisioners": [
+        {
+            "provisionerName": "Telink provisioner",
+            "UUID": "fffbebbf-5306-0a00-0000-000000000000",
+            "allocatedGroupRange": [
+                {
+                    "highAddress": "c0ff",
+                    "lowAddress": "c000"
+                }
+            ],
+            "allocatedUnicastRange": [
+                {
+                    "highAddress": "03ff",
+                    "lowAddress": "0001"
+                }
+            ],
+            "allocatedSceneRange": [
+                {
+                    "firstScene": "0001",
+                    "lastScene": "000f"
+                }
+            ]
+        }
+    ],
+    "netKeys": [
+        {
+            "name": "",
+            "key": "184c59636d7781818e97a1a1abb5c2c2",
+            "minSecurity": "secure",
+            "timestamp": "2018-12-23T11:45:22Z",
+            "index": 0,
+            "phase": 0
+        }
+    ],
+    "scenes": [],
+    "groups": [
+        {
+            "name": "Living room",
+            "address": "c000",
+            "parentAddress": "0000"
+        },
+        {
+            "name": "Kitchen",
+            "address": "c001",
+            "parentAddress": "0000"
+        },
+        {
+            "name": "Master bedroom",
+            "address": "c002",
+            "parentAddress": "0000"
+        },
+        {
+            "name": "Secondary bedroom",
+            "address": "c003",
+            "parentAddress": "0000"
+        },
+        {
+            "name": "Balcony",
+            "address": "c004",
+            "parentAddress": "0000"
+        },
+        {
+            "name": "Bathroom",
+            "address": "c005",
+            "parentAddress": "0000"
+        },
+        {
+            "name": "Hallway",
+            "address": "c006",
+            "parentAddress": "0000"
+        },
+        {
+            "name": "others",
+            "address": "c007",
+            "parentAddress": "0000"
+        }
+    ]
+}
