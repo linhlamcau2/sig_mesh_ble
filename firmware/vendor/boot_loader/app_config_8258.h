@@ -71,7 +71,7 @@ extern "C" {
 #if WIN32
 #define HCI_ACCESS		HCI_USE_USB
 #else
-#define HCI_ACCESS		HCI_USE_NONE
+#define HCI_ACCESS		HCI_USE_UART
 #endif 
 
 #if (HCI_ACCESS==HCI_USE_UART)

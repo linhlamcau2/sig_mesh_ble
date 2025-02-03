@@ -31,6 +31,16 @@
 #include "proj_lib/ble/ll/ll.h"
 #include "proj_lib/sig_mesh/app_mesh.h"
 
+unsigned char uart_CSend(char* data){		//RD_EDIT: uart_Csend
+	#if (HCI_ACCESS == HCI_USE_UART)
+	while(*data != '\0')
+	{
+		uart_ndma_send_byte(*(data++));
+	}
+	#endif
+	return 0;
+}
+
 #define DEBUG_PIN                (PWM_R)
 
 // user define
@@ -208,9 +218,15 @@ _attribute_ram_code_ int main(void)
 	LOG_USER_MSG_INFO(0, 0,"[boot] Start from Bootloader", 0);
 #endif
 
+	uart_gpio_set(GPIO_PD7,GPIO_PA0);	//RD_EDIT: uart_init
+			uart_init_baudrate(115200, CLOCK_SYS_CLOCK_HZ, PARITY_NONE, STOP_BIT_ONE);	//RD_EDIT: uart_init
+			uart_dma_enable(0,0);
+			uart_CSend("hello bootloader\n");
+
 	u32 mesh_type = *(u32 *) FLASH_ADR_MESH_TYPE_FLAG;
 	// don't check firmware valid here, because we should check ota valid before. 
 	if((TYPE_TLK_ZIGBEE == mesh_type) || (TYPE_DUAL_MODE_ZIGBEE_RESET == mesh_type)){
+		uart_CSend("boot zig\n");
 	    g_addr_load = DUAL_MODE_FW_ADDR_ZIGBEE;
 	}else{
 	    #if 0 // no need, because zigbee will set mesh type and reboot after 6s
@@ -219,6 +235,7 @@ _attribute_ram_code_ int main(void)
 	    }else
 	    #endif
 	    {
+	    	uart_CSend("boot sig\n");
 	        g_addr_load = DUAL_MODE_FW_ADDR_SIGMESH;
 	    }
 	}
