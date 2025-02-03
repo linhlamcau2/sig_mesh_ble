@@ -1787,10 +1787,13 @@ void cmd_ota_mesh_hk_login_handle(const u8 auth_app[16])
  * @return      none
  * @note        
  */
+
+extern void rd_log_ev(const char *format, ...);
 void set_firmware_type(u32 sdk_type)
 {
     u32 mesh_type = 0;
     flash_read_page(FLASH_ADR_MESH_TYPE_FLAG, sizeof(mesh_type), (u8 *)&mesh_type);
+//    rd_log_ev("mesh_type: %d\n",mesh_type);
 	if(mesh_type != 0xffffffff){
 		flash_erase_sector(FLASH_ADR_MESH_TYPE_FLAG);
 	}
@@ -2822,9 +2825,9 @@ void ble_mac_init()
 		tbl_mac[2] = value_rand[2];
 
 		#if(MCU_CORE_TYPE == MCU_CORE_8258)
-			tbl_mac[3] = 0x38;             //company id: 0xA4C138
-			tbl_mac[4] = 0xC1;
-			tbl_mac[5] = 0xA4;
+			tbl_mac[3] = 0x02;             //company id: 0xA4C138
+			tbl_mac[4] = 0x02;
+			tbl_mac[5] = 0x1C;
 		#elif(MCU_CORE_TYPE == MCU_CORE_8278)
 			tbl_mac[3] = 0xD1;             //company id: 0xC119D1
 			tbl_mac[4] = 0x19;

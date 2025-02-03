@@ -28,6 +28,8 @@
 #include "proj_lib/ble/ll//ll.h"
 #include "app_beacon.h"
 
+//#include "../mesh/rd_log/rd_log.h"
+extern void rd_log_ev(const char *format, ...);
 //FLASH_ADDRESS_EXTERN;
 
 //////////////////Factory Reset///////////////////////////////////////////////////////////////////////
@@ -333,11 +335,14 @@ void increase_reset_cnt ()
 int factory_reset_handle ()
 {
     reset_cnt_get_idx();   
+    u8 count = get_reset_cnt();
+    rd_log_ev("get_reset_cnt: %d\n",count);
 	if(get_reset_cnt() == RESET_TRIGGER_VAL){
 		#if MANUAL_FACTORY_RESET_TX_STATUS_EN
 		send_and_wait_completed_reset_node_status();
         #endif
         irq_disable();
+        rd_log_ev("factory_reset_handle\n");
         factory_reset();
             #if DUAL_MODE_WITH_TLK_MESH_EN
         UI_restore_TLK_4K_with_check();
@@ -370,6 +375,7 @@ int factory_reset_cnt_check ()
 
 	if(0 == clear_st) return 0;
 	if(4 == clear_st && clock_time_exceed(0, VALID_POWER_ON_TIME_US)){
+		rd_log_ev("start count fac\n");
 		clear_st--;
 		factory_reset_handle();
 	}
@@ -408,6 +414,7 @@ int factory_reset_cnt_check ()
  */
 int factory_reset() // 1M flash
 {
+	rd_log_ev("factory_reset\n");
 	u32 r = irq_disable ();
 	for(int i = 0; i < (FLASH_ADR_AREA_1_END - FLASH_ADR_AREA_1_START) / 4096; ++i){
 	    u32 adr = FLASH_ADR_AREA_1_START + i*0x1000;

@@ -39,6 +39,9 @@
 #include "drivers/8278/rf_drv.h"
 #endif
 
+
+#include "../mesh/rd_log/rd_log.h"
+
 void rf_setTxModeNew(void);
 int is_zigbee_found();
 
@@ -177,12 +180,14 @@ void dual_mode_en_init()		// call in mesh_init_all();
 	if(DUAL_MODE_SAVE_ENABLE == en)
 #endif
 	{
+//		rd_log_ev("dual_mode_en_init\n");
 		u32 startup_flag1 = 0;
 		u32 startup_flag2 = 0;
 		flash_read_page(DUAL_MODE_FW_ADDR_SIGMESH + 8, 4, (u8 *)&startup_flag1);
 		startup_flag1 |= 0x4b;  // recover.
 		flash_read_page(DUAL_MODE_FW_ADDR_ZIGBEE + 8, 4, (u8 *)&startup_flag2);
 		if((START_UP_FLAG == startup_flag1) && (START_UP_FLAG == startup_flag2)){
+//			rd_log_ev("dual_mode_en_init\n");
             u32 mesh_type = 0;
             flash_read_page(FLASH_ADR_MESH_TYPE_FLAG, sizeof(mesh_type), (u8 *)&mesh_type);
             #if DUAL_MODE_WITH_TLK_MESH_EN
@@ -205,8 +210,10 @@ void dual_mode_en_init()		// call in mesh_init_all();
 		    if(TYPE_DUAL_MODE_STANDBY == mesh_type){
 			    dual_mode_state = DUAL_MODE_SUPPORT_ENABLE;
                 LOG_MSG_LIB(TL_LOG_NODE_SDK,0, 0,"Dual mode support enable",0);
+                rd_log_ev("Dual mode support enable\n");
 		    }else{
 			    dual_mode_state = DUAL_MODE_SUPPORT_DISABLE;
+			    rd_log_ev("Dual mode support disable\n");
                 LOG_MSG_LIB(TL_LOG_NODE_SDK,0, 0,"Dual mode support disable",0);
 			}
 			#endif
@@ -248,7 +255,9 @@ void dual_mode_disable()
 
 void dual_mode_select()    // 
 {
-	if(DUAL_MODE_SUPPORT_ENABLE == dual_mode_state){
+//	if(DUAL_MODE_SUPPORT_ENABLE == dual_mode_state)
+	if(1)
+	{
 		dual_mode_state = DUAL_MODE_SUPPORT_DISABLE;
 		#if DUAL_MODE_WITH_TLK_MESH_EN
         set_firmware_type_SIG_mesh();
@@ -256,10 +265,12 @@ void dual_mode_select()    //
 		#else
 		if(rf_mode == RF_MODE_BLE){
             set_firmware_type_SIG_mesh();
+//            rd_log_ev("set_firmware_type_SIG_mesh\n");
             LOG_MSG_LIB(TL_LOG_NODE_SDK,0, 0,"Dual mode support disable: select BLE",0);
 		}else{
 		    #if (FW_START_BY_BOOTLOADER_EN)
             set_firmware_type_zb_with_factory_reset();
+//            rd_log_ev("set_firmware_type_zb_with_factory_reset\n");
 		    #else
             u8 zero = 0;
 			u32 adr_boot_disable = ota_program_offset ? 0 : 0x40000;
@@ -276,7 +287,7 @@ void dual_mode_disable(){};
 #endif
 
 #if DUAL_MESH_ZB_BL_EN
-#define DUAL_MODE_SWITCH_INV_US		(3000*1000)
+#define DUAL_MODE_SWITCH_INV_US		(5000*1000)
 #elif DUAL_MESH_SIG_PVT_EN
 #define DUAL_MODE_SWITCH_INV_US		(160*1000)
 #endif
@@ -684,6 +695,7 @@ static u32 scanDuration = 0;
 void zigbee_network_scan(void){
 	//static u8 once = 1;
 	if(!is_zigbee_found() && clock_time_exceed(scanDuration, ZB_ACTIVE_SCAN_DURATION)){
+//		rd_log_ev("zigbee_network_scan chan: %d\n",curChannel);
 		scanDuration = clock_time();
 		T_zigbee_network_scan_cnt[1]++;
 		rf_setChannelNew(curChannel);
@@ -701,12 +713,16 @@ void zigbee_recv_data_poll(void){
 		T_zbRfRxCnt[0]++;
 
 		zb_mac_hdr_t hdr;
+
 		memcpy(&hdr, &raw_pkt[ZB_RF_ACTUAL_PAYLOAD_POST], sizeof(zb_mac_hdr_t));
+		rd_log_ev("hdr : %d\n",hdr.frmCtrl);
 		if(hdr.frmCtrl == 0x8000){
 			T_zbRfRxCnt[1]++;
 			zb_mac_pld_t macPld;
 			memcpy(&macPld, &raw_pkt[ZB_RF_ACTUAL_PAYLOAD_POST+sizeof(zb_mac_hdr_t)], sizeof(zb_mac_pld_t));
-			if(macPld.gts == 0 && ((macPld.sfSpecification & 0xbfff) == 0x8fff) && macPld.pendAddr == 0 &&
+			rd_log_ev("gts : %d,sfSpecification: %d,pendAddr: %d,Id: %d\n",macPld.gts,macPld.sfSpecification,macPld.pendAddr,macPld.beaconInfo.protocolId);
+			rd_log_ev("stackProfile : %d,nwkProtocolVer: %d,routerCap: %d,edCap: %d\n",macPld.beaconInfo.stackProfile,macPld.beaconInfo.nwkProtocolVer,macPld.beaconInfo.routerCap,macPld.beaconInfo.edCap);
+			if(macPld.gts == 0 && ((macPld.sfSpecification & 0xbfff) == 0x0fff) && macPld.pendAddr == 0 &&
 				macPld.beaconInfo.protocolId == 0 &&
 				macPld.beaconInfo.stackProfile == 0x02 &&
 				macPld.beaconInfo.nwkProtocolVer == 0x02 &&
@@ -714,6 +730,7 @@ void zigbee_recv_data_poll(void){
 				macPld.beaconInfo.edCap == 0x01){
 				T_zbRfRxCnt[2]++;
 				zigbeeNetworkFound = 1;
+				rd_log_ev("zigbeeNetworkFound = 1\n");
 			}
 		}
 	}
@@ -765,17 +782,33 @@ volatile u8 T_zigbeeSdkRun;
 volatile u8 T_DBG_zigbeeTest[2] = {0};
 u8 dual_mode_proc()
 {
-	if(DUAL_MODE_SUPPORT_ENABLE != dual_mode_state){
-		return RF_MODE_BLE;
-	}
-	
+//	static u8 a = 0;
+
+//	if(DUAL_MODE_SUPPORT_ENABLE != dual_mode_state){
+//		return RF_MODE_BLE;
+//	}
+
+//	if(a == 0)
+//	{
+//		rd_log_ev("dual mode check\n");
+//		a  =1 ;
+//	}
+	static u8 rd_is_ble_found =0;
 	static u32 dual_mode_tick;
 	if(is_ble_found()){
 		dual_mode_tick = clock_time();	// switch mode pause
+		if(rd_is_ble_found == 0)
+		{
+			rd_log_ev("rd_is_ble_found\n");
+			rd_is_ble_found =1;
+		}
 	}else if(is_zigbee_found()){
+		rd_is_ble_found = 0;
 		dual_mode_tick = clock_time();	// switch mode pause
 
+		rd_log_ev("rd_mesh_sw_zigbee 0\n");
 		if(rf_mode == RF_MODE_ZIGBEE){
+			rd_log_ev("rd_mesh_sw_zigbee\n");
 			T_zigbeeSdkRun = 1;
 			dual_mode_select(); // just select, disable by Zigbee SDK when OTA start
 			//have been reboot in dual mode slecte()  from zigbee sdk
@@ -784,11 +817,14 @@ u8 dual_mode_proc()
 		    zigbee_found_clear();
 		}
 	}else{
+		rd_is_ble_found = 0;
 		if(clock_time_exceed(dual_mode_tick, DUAL_MODE_SWITCH_INV_US)){
+			rd_log_ev("rd_dual_mode\n");
 			dual_mode_tick = clock_time();
 			u32 r = irq_disable();
 			static u8 val_settle;
 			if(rf_mode == RF_MODE_BLE){
+				rd_log_ev("rd_mode_ble\n");
 				rf_mode = RF_MODE_ZIGBEE;
 
 				T_DBG_zigbeeTest[0]++;
@@ -797,6 +833,7 @@ u8 dual_mode_proc()
                 val_settle = REG_ADDR8(0xf04);
 				dual_mode_zigbee_init();
 			}else{
+				rd_log_ev("rd_mode_zigbee\n");
 				#if 0	// confirm later
 				start_reboot();
 				#else
@@ -804,7 +841,7 @@ u8 dual_mode_proc()
 				if(!val_settle){
                     val_settle = REG_ADDR8(0xf04);  // init
 				}
-				
+
 				    #if (__TL_LIB_8258__ || (MCU_CORE_TYPE == MCU_CORE_8258) || (MCU_CORE_TYPE == MCU_CORE_8278))
 				rf_ble_1m_param_recovery_from_zb();
 				rf_drv_init(RF_MODE_BLE_1M);    // it would init settle time and RF offset

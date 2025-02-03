@@ -17,6 +17,7 @@ SIZEDUMMY :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 vendor/user_app \
+vendor/mesh/rd_log \
 vendor/mesh \
 vendor/common \
 vendor/common/telink_platform \

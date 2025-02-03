@@ -99,7 +99,7 @@ extern "C" {
 	#if GATT_RP_EN
 #define HCI_ACCESS		HCI_USE_UART
 	#else
-#define HCI_ACCESS		HCI_USE_NONE
+#define HCI_ACCESS		HCI_USE_UART
 	#endif
 #endif 
 

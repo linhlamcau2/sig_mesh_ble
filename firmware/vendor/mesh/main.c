@@ -31,9 +31,12 @@
 #include "proj_lib/ble/ll/ll.h"
 #include "proj_lib/sig_mesh/app_mesh.h"
 
+#include "rd_log/rd_log.h"
+
 extern void user_init();
 extern void main_loop ();
 void blc_pm_select_none();
+
 
 #if (HCI_ACCESS==HCI_USE_UART)
 #include "proj/drivers/uart.h"
@@ -220,7 +223,13 @@ _attribute_ram_code_ int main (void)    //must run in ramcode
 		#else
 		LOG_USER_MSG_INFO(0, 0, "Start user init...", 0);
 		#endif
+
 		user_init();
+
+		uart_gpio_set(GPIO_PD7,GPIO_PA0);	//RD_EDIT: uart_init
+				uart_init_baudrate(115200, CLOCK_SYS_CLOCK_HZ, PARITY_NONE, STOP_BIT_ONE);	//RD_EDIT: uart_init
+				uart_dma_enable(0,0);
+				rd_log_ev("hello sigmesh\n");
 	}
 
     irq_enable();

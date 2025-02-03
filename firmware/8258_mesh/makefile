@@ -10,6 +10,7 @@ RM := rm -rf
 -include sources.mk
 -include subdir.mk
 -include vendor/user_app/subdir.mk
+-include vendor/mesh/rd_log/subdir.mk
 -include vendor/mesh/subdir.mk
 -include vendor/common/subdir.mk
 -include vendor/common/telink_platform/subdir.mk
