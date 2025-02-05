@@ -224,6 +224,10 @@ _attribute_ram_code_ int main (void)    //must run in ramcode
 		LOG_USER_MSG_INFO(0, 0, "Start user init...", 0);
 		#endif
 
+		uart_gpio_set(GPIO_PD7,GPIO_PA0);	//RD_EDIT: uart_init
+						uart_init_baudrate(115200, CLOCK_SYS_CLOCK_HZ, PARITY_NONE, STOP_BIT_ONE);	//RD_EDIT: uart_init
+						uart_dma_enable(0,0);
+
 		user_init();
 
 		uart_gpio_set(GPIO_PD7,GPIO_PA0);	//RD_EDIT: uart_init

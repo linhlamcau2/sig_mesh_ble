@@ -186,6 +186,7 @@ void dual_mode_en_init()		// call in mesh_init_all();
 		flash_read_page(DUAL_MODE_FW_ADDR_SIGMESH + 8, 4, (u8 *)&startup_flag1);
 		startup_flag1 |= 0x4b;  // recover.
 		flash_read_page(DUAL_MODE_FW_ADDR_ZIGBEE + 8, 4, (u8 *)&startup_flag2);
+		rd_log_ev("dual_mode_en_init 1: %d, 2: %d\n",startup_flag1,startup_flag2);
 		if((START_UP_FLAG == startup_flag1) && (START_UP_FLAG == startup_flag2)){
 //			rd_log_ev("dual_mode_en_init\n");
             u32 mesh_type = 0;
@@ -255,8 +256,8 @@ void dual_mode_disable()
 
 void dual_mode_select()    // 
 {
-//	if(DUAL_MODE_SUPPORT_ENABLE == dual_mode_state)
-	if(1)
+	if(DUAL_MODE_SUPPORT_ENABLE == dual_mode_state)
+//	if(1)
 	{
 		dual_mode_state = DUAL_MODE_SUPPORT_DISABLE;
 		#if DUAL_MODE_WITH_TLK_MESH_EN
@@ -784,9 +785,9 @@ u8 dual_mode_proc()
 {
 //	static u8 a = 0;
 
-//	if(DUAL_MODE_SUPPORT_ENABLE != dual_mode_state){
-//		return RF_MODE_BLE;
-//	}
+	if(DUAL_MODE_SUPPORT_ENABLE != dual_mode_state){
+		return RF_MODE_BLE;
+	}
 
 //	if(a == 0)
 //	{

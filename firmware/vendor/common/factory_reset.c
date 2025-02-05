@@ -375,7 +375,7 @@ int factory_reset_cnt_check ()
 
 	if(0 == clear_st) return 0;
 	if(4 == clear_st && clock_time_exceed(0, VALID_POWER_ON_TIME_US)){
-		rd_log_ev("start count fac\n");
+//		rd_log_ev("start count fac\n");
 		clear_st--;
 		factory_reset_handle();
 	}
