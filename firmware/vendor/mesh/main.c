@@ -233,16 +233,23 @@ _attribute_ram_code_ int main (void)    //must run in ramcode
 		uart_gpio_set(GPIO_PD7,GPIO_PA0);	//RD_EDIT: uart_init
 				uart_init_baudrate(115200, CLOCK_SYS_CLOCK_HZ, PARITY_NONE, STOP_BIT_ONE);	//RD_EDIT: uart_init
 				uart_dma_enable(0,0);
-				rd_log_ev("hello sigmesh\n");
+				rd_log_ev("hello sigmesh1\n");
 	}
 
     irq_enable();
 
+    extern void rd_test_check_fw();
 	while (1) {
 #if (MODULE_WATCHDOG_ENABLE)
 		wd_clear(); //clear watch dog
 #endif
 		main_loop ();
+		static u32 time = 0;
+		if(clock_time_100ms() - time > 5*10)
+		{
+			time = clock_time_100ms();
+			rd_test_check_fw();
+		}
 	}
 }
 #endif

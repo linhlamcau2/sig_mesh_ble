@@ -166,6 +166,15 @@ u8 pair_ltk[17] = MESH_LTK;
 
 #define START_UP_FLAG		(0x544c4e4b)
 
+void rd_test_check_fw()
+{
+	u32 startup_flag1 = 0;
+	u32 startup_flag2 = 0;
+	flash_read_page(DUAL_MODE_FW_ADDR_SIGMESH + 8, 4, (u8 *)&startup_flag1);
+	startup_flag1 |= 0x4b;  // recover.
+	flash_read_page(DUAL_MODE_FW_ADDR_ZIGBEE + 8, 4, (u8 *)&startup_flag2);
+	rd_log_ev("dual check firm 1: %d, 2: %d\n",startup_flag1,startup_flag2);
+}
 void dual_mode_en_init()		// call in mesh_init_all();
 {
 #if (0 == FW_START_BY_BOOTLOADER_EN)
@@ -186,7 +195,7 @@ void dual_mode_en_init()		// call in mesh_init_all();
 		flash_read_page(DUAL_MODE_FW_ADDR_SIGMESH + 8, 4, (u8 *)&startup_flag1);
 		startup_flag1 |= 0x4b;  // recover.
 		flash_read_page(DUAL_MODE_FW_ADDR_ZIGBEE + 8, 4, (u8 *)&startup_flag2);
-		rd_log_ev("dual_mode_en_init 1: %d, 2: %d\n",startup_flag1,startup_flag2);
+//		rd_log_ev("dual_mode_en_init 1: %d, 2: %d\n",startup_flag1,startup_flag2);
 		if((START_UP_FLAG == startup_flag1) && (START_UP_FLAG == startup_flag2)){
 //			rd_log_ev("dual_mode_en_init\n");
             u32 mesh_type = 0;

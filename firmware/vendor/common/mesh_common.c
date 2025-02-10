@@ -1876,7 +1876,7 @@ u8 proc_telink_mesh_to_sig_mesh(void)
     
 	u32 mesh_type = *(u32 *) FLASH_ADR_MESH_TYPE_FLAG;
 
-	rd_log_ev("init mesh_type: %d\n",mesh_type);
+//	rd_log_ev("init mesh_type: %d\n",mesh_type);
 	#if DUAL_MODE_ADAPT_EN
     LOG_MSG_LIB(TL_LOG_NODE_SDK,0, 0,"sdk type 0x%x:0x%x", FLASH_ADR_MESH_TYPE_FLAG, mesh_type);
 	if(TYPE_DUAL_MODE_STANDBY == mesh_type){
